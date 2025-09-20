@@ -11,7 +11,7 @@ const App = () => {
   const messagesEndRef = useRef(null);
 
   // Backend URL - change this to your deployed backend URL
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+  const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://saathi-1.onrender.com/api';
 
   // Auto-scroll to bottom
   const scrollToBottom = () => {
@@ -31,7 +31,7 @@ const App = () => {
           'Content-Type': 'application/json',
         },
       });
-      
+
       const data = await response.json();
       if (data.success) {
         setSessionId(data.sessionId);
@@ -77,7 +77,7 @@ const App = () => {
       });
 
       const data = await response.json();
-      
+
       if (data.success) {
         const aiMessage = {
           role: 'assistant',
@@ -123,7 +123,7 @@ const App = () => {
   // Message component
   const Message = ({ message }) => {
     const isUser = message.role === 'user';
-    
+
     return (
       <div className={`flex gap-2 sm:gap-3 mb-3 sm:mb-4 ${isUser ? 'justify-end' : 'justify-start'} px-2 sm:px-0`}>
         {!isUser && (
@@ -131,27 +131,26 @@ const App = () => {
             S
           </div>
         )}
-        
-        <div className={`max-w-[75%] sm:max-w-xs lg:max-w-md px-3 sm:px-4 py-2 sm:py-3 rounded-2xl ${
-          isUser 
-            ? 'bg-blue-500 text-white rounded-br-md' 
-            : message.isError 
+
+        <div className={`max-w-[75%] sm:max-w-xs lg:max-w-md px-3 sm:px-4 py-2 sm:py-3 rounded-2xl ${isUser
+            ? 'bg-blue-500 text-white rounded-br-md'
+            : message.isError
               ? 'bg-red-100 text-red-800 border border-red-300 rounded-bl-md'
               : 'bg-gray-100 text-gray-800 rounded-bl-md'
-        }`}>
+          }`}>
           <div className="whitespace-pre-wrap break-words text-sm sm:text-base leading-relaxed">
             {message.content}
           </div>
-          
+
           {message.crisis && (
             <CrisisAlert crisis={message.crisis} />
           )}
-          
+
           <div className="text-xs opacity-60 mt-1 sm:mt-2">
-            {new Date(message.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+            {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </div>
         </div>
-        
+
         {isUser && (
           <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm flex-shrink-0">
             Y
@@ -168,7 +167,7 @@ const App = () => {
       <div className="space-y-1 sm:space-y-2">
         {crisis.resources.slice(0, 2).map((resource, index) => (
           <div key={index} className="text-red-700">
-            <strong className="text-xs sm:text-sm">{resource.name}:</strong> 
+            <strong className="text-xs sm:text-sm">{resource.name}:</strong>
             <a href={`tel:${resource.phone}`} className="text-red-600 hover:underline ml-1 text-xs sm:text-sm block sm:inline">
               {resource.phone}
             </a>
@@ -230,8 +229,8 @@ const App = () => {
                 नमस्ते! Welcome to Saathi
               </h2>
               <p className="text-gray-600 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
-                Your anonymous, culturally-aware AI companion for mental wellness support. 
-                I understand the unique pressures faced by Indian youth and can communicate 
+                Your anonymous, culturally-aware AI companion for mental wellness support.
+                I understand the unique pressures faced by Indian youth and can communicate
                 in both Hindi and English.
               </p>
               <div className="space-y-3">
@@ -257,7 +256,7 @@ const App = () => {
               {messages.map((message, index) => (
                 <Message key={index} message={message} />
               ))}
-              
+
               {isTyping && <TypingIndicator />}
               <div ref={messagesEndRef} />
             </div>
