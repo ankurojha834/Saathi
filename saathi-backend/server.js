@@ -34,7 +34,7 @@ const crisisKeywords = [
 // Gemini API integration
 async function callGeminiAPI(message, conversationHistory = []) {
   const { GoogleGenerativeAI } = require('@google/generative-ai');
-  
+
   if (!process.env.GEMINI_API_KEY) {
     throw new Error('GEMINI_API_KEY not found in environment variables');
   }
@@ -83,13 +83,13 @@ GUIDELINES:
 
   // Build conversation context
   let conversationContext = systemPrompt + '\n\nConversation History:\n';
-  
+
   // Include last 5 messages for context
   const recentHistory = conversationHistory.slice(-5);
   recentHistory.forEach(msg => {
     conversationContext += `${msg.role === 'user' ? 'User' : 'Saathi'}: ${msg.content}\n`;
   });
-  
+
   conversationContext += `\nUser: ${message}\n\nSaathi:`;
 
   try {
@@ -105,7 +105,7 @@ GUIDELINES:
 // Check for crisis keywords
 function containsCrisisKeywords(message) {
   const lowerMessage = message.toLowerCase();
-  return crisisKeywords.some(keyword => 
+  return crisisKeywords.some(keyword =>
     lowerMessage.includes(keyword.toLowerCase())
   );
 }
@@ -156,8 +156,8 @@ function generateSessionId() {
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'healthy', 
+  res.json({
+    status: 'healthy',
     timestamp: new Date().toISOString(),
     version: '1.0.0'
   });
@@ -166,7 +166,7 @@ app.get('/api/health', (req, res) => {
 // Start new session
 app.post('/api/session/start', (req, res) => {
   const sessionId = generateSessionId();
-  
+
   sessions.set(sessionId, {
     id: sessionId,
     messages: [],
@@ -220,14 +220,14 @@ app.post('/api/chat/:sessionId', async (req, res) => {
     // Check for crisis
     const isCrisis = containsCrisisKeywords(message);
     let crisisInfo = null;
-    
+
     if (isCrisis) {
       crisisInfo = getCrisisResources();
     }
 
     // Get AI response
     const aiResponse = await callGeminiAPI(message, session.messages);
-    
+
     // Add AI response to history
     const aiMessage = {
       role: 'assistant',
@@ -330,7 +330,7 @@ app.get('/api/resources', (req, res) => {
 setInterval(() => {
   const now = new Date();
   const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
-  
+
   for (const [sessionId, session] of sessions.entries()) {
     if (session.lastActivity < oneHourAgo) {
       sessions.delete(sessionId);
