@@ -206,7 +206,10 @@ const App = () => {
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 sm:p-4 shadow-lg">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-xl sm:text-2xl font-bold mb-1">🤝 SAATHI</h1>
+         <h1 className="text-xl sm:text-2xl font-bold mb-1 flex items-center">
+  <img src="/img.png" alt="Logo" className="w-6 h-6 mr-2" />
+  SAATHI
+</h1>
           <p className="text-blue-100 text-xs sm:text-sm">
             Your AI Mental Wellness Companion - Anonymous, Safe, Culturally Aware
           </p>
