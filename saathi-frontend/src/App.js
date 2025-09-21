@@ -206,7 +206,7 @@ const App = () => {
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 sm:p-4 shadow-lg">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-xl sm:text-2xl font-bold mb-1">🤝 Saathi</h1>
+          <h1 className="text-xl sm:text-2xl font-bold mb-1">🤝 SAATHI</h1>
           <p className="text-blue-100 text-xs sm:text-sm">
             Your AI Mental Wellness Companion - Anonymous, Safe, Culturally Aware
           </p>
@@ -226,7 +226,7 @@ const App = () => {
             <div className="text-center max-w-sm sm:max-w-md">
               <div className="text-4xl sm:text-6xl mb-4 sm:mb-6 animate-pulse">🌟</div>
               <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4">
-                नमस्ते! Welcome to Saathi
+                नमस्ते! Welcome to SAATHI
               </h2>
               <p className="text-gray-600 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
                 Your anonymous, culturally-aware AI companion for mental wellness support.
