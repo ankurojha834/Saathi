@@ -102,8 +102,7 @@ You feel heard. You feel less alone.
 - **Frontend:** React PWA - Works on any device, even offline
 - **Backend:** Node.js - Fast, reliable, secure
 - **AI Heart:** Google Vertex AI (Gemini Pro) - Trained for empathy
-- **Database:** Firestore - Your anonymity protected
-- **Hosting:** Firebase - Always available when you need us
+- **Hosting:** Vercel and Render - Always available when you need us
 
 ---
 
