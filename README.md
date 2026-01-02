@@ -189,7 +189,7 @@ We've felt the 3 AM panic. The exam pressure. The family expectations. The lonel
 
 ## 👥 Team
 
-**[Ankur Ojha]** - Students who refused to accept that youth should suffer alone.
+**[Ankur Ojha](https://www.linkedin.com/in/ankur-ojha-502a4a280?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)** - Students who refused to accept that youth should suffer alone.
 
 *"We're not just building an app. We're starting a movement."*
 
