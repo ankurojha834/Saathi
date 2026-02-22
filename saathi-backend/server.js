@@ -443,6 +443,14 @@ app.use('*', (req, res) => {
   res.status(404).json({ success: false, error: 'Route not found' });
 });
 
+// Serve React frontend in production
+const path = require('path');
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../saathi-frontend/build')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../saathi-frontend/build', 'index.html'));
+  });
+}
 app.listen(PORT, () => {
   console.log(`🚀 Saathi Backend running on port ${PORT}`);
   console.log(`🤖 AI: Groq (llama-3.1-70b-versatile)`);

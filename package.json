@@ -1,0 +1,8 @@
+{
+  "name": "saathi-fullstack",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd saathi-frontend && npm install && npm run build",
+    "start": "cd saathi-backend && npm install && node server.js"
+  }
+}
