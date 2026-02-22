@@ -20,7 +20,7 @@ const App = () => {
   const messagesEndRef = useRef(null);
 
   // const API_BASE_URL = 'http://localhost:5000/api';
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://saathi-backend-u648.onrender.com';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://saathi-backend-u648.onrender.com/api';
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
