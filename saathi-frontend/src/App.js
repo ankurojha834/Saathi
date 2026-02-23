@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import MoodTracker, { MoodTrackerButton } from './MoodTracker';
+import KalKaAnkur, { KalKaAnkurButton } from './KalKaAnkur';
 
 const App = () => {
   const [sessionId, setSessionId] = useState(null);
@@ -10,8 +11,9 @@ const App = () => {
   const [error, setError] = useState(null);
   const [showWelcome, setShowWelcome] = useState(true);
   const [crisisState, setCrisisState] = useState(null);
-  const [showMoodTracker, setShowMoodTracker] = useState(false); // 🆕
-  const [hasCheckedIn, setHasCheckedIn] = useState(() => {   // 🆕
+  const [showMoodTracker, setShowMoodTracker] = useState(false);
+  const [showKalKaAnkur, setShowKalKaAnkur] = useState(false); // 🆕
+  const [hasCheckedIn, setHasCheckedIn] = useState(() => {
     try {
       const moods = JSON.parse(localStorage.getItem('saathi_moods') || '[]');
       return moods.some(e => e.date === new Date().toDateString());
@@ -19,9 +21,8 @@ const App = () => {
   });
   const messagesEndRef = useRef(null);
 
-  // const API_BASE_URL = 'http://localhost:5000/api';
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://saathi-backend-u648.onrender.com/api';
-
+// const API_BASE_URL = 'http://localhost:5000/api';
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -48,7 +49,6 @@ const App = () => {
             timestamp: new Date(),
             crisis: null
           }]);
-          // 🆕 Prompt mood check-in after welcome
           setTimeout(() => setShowMoodTracker(true), 2000);
         }, 1000);
       }
@@ -85,10 +85,7 @@ const App = () => {
           crisis: data.crisis || null
         };
         setMessages(prev => [...prev, aiMessage]);
-
-        if (data.crisis) {
-          setCrisisState(data.crisis);
-        }
+        if (data.crisis) setCrisisState(data.crisis);
       } else {
         throw new Error(data.error || 'Failed to get response');
       }
@@ -106,7 +103,7 @@ const App = () => {
     }
   };
 
-  // 🆕 Handle mood logged — Saathi reacts to low mood
+  // Handle mood logged
   const handleMoodLogged = (mood) => {
     setHasCheckedIn(true);
     setShowMoodTracker(false);
@@ -182,50 +179,23 @@ const App = () => {
     const progressPct = countdown !== null ? (countdown / 10) * 100 : 0;
 
     return (
-      <div style={{
-        position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.82)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        zIndex: 10000, padding: '1rem',
-      }}>
-        <div style={{
-          background: '#0f0f1a', borderRadius: '20px',
-          width: '100%', maxWidth: '420px', color: '#fff',
-          boxShadow: '0 0 60px rgba(229,57,53,0.35)',
-          overflow: 'hidden', maxHeight: '92vh', overflowY: 'auto',
-        }}>
-          <div style={{
-            height: '5px',
-            background: crisis.severity === 'high'
-              ? 'linear-gradient(90deg,#e53935,#b71c1c)'
-              : 'linear-gradient(90deg,#fb8c00,#e65100)'
-          }} />
+      <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.82)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10000, padding: '1rem' }}>
+        <div style={{ background: '#0f0f1a', borderRadius: '20px', width: '100%', maxWidth: '420px', color: '#fff', boxShadow: '0 0 60px rgba(229,57,53,0.35)', overflow: 'hidden', maxHeight: '92vh', overflowY: 'auto' }}>
+          <div style={{ height: '5px', background: crisis.severity === 'high' ? 'linear-gradient(90deg,#e53935,#b71c1c)' : 'linear-gradient(90deg,#fb8c00,#e65100)' }} />
           <div style={{ padding: '1.5rem' }}>
             <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
               <div style={{ fontSize: '2.2rem' }}>💚</div>
-              <h2 style={{ fontSize: '1.35rem', fontWeight: 800, margin: '0.4rem 0 0.2rem' }}>
-                Tum Akele Nahi Ho
-              </h2>
-              <p style={{ color: '#9e9e9e', fontSize: '0.85rem', margin: 0 }}>
-                You are not alone. Real help is one call away.
-              </p>
+              <h2 style={{ fontSize: '1.35rem', fontWeight: 800, margin: '0.4rem 0 0.2rem' }}>Tum Akele Nahi Ho</h2>
+              <p style={{ color: '#9e9e9e', fontSize: '0.85rem', margin: 0 }}>You are not alone. Real help is one call away.</p>
             </div>
-            <div style={{
-              background: 'rgba(255,255,255,0.05)', borderLeft: '3px solid #4caf50',
-              borderRadius: '0 10px 10px 0', padding: '0.85rem 1rem', marginBottom: '1rem',
-            }}>
-              <p style={{ margin: 0, lineHeight: 1.7, fontSize: '0.9rem', color: '#e0e0e0' }}>
-                {crisis.message}
-              </p>
+            <div style={{ background: 'rgba(255,255,255,0.05)', borderLeft: '3px solid #4caf50', borderRadius: '0 10px 10px 0', padding: '0.85rem 1rem', marginBottom: '1rem' }}>
+              <p style={{ margin: 0, lineHeight: 1.7, fontSize: '0.9rem', color: '#e0e0e0' }}>{crisis.message}</p>
             </div>
 
-            {/* Mobile: countdown | Laptop: show number */}
             {crisis.autoCall && (
               isMobile ? (
                 countdown !== null && countdown > 0 && (
-                  <div style={{
-                    background: 'rgba(229,57,53,0.12)', border: '1px solid rgba(229,57,53,0.4)',
-                    borderRadius: '12px', padding: '1rem', marginBottom: '1rem',
-                  }}>
+                  <div style={{ background: 'rgba(229,57,53,0.12)', border: '1px solid rgba(229,57,53,0.4)', borderRadius: '12px', padding: '1rem', marginBottom: '1rem' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
                       <span style={{ fontSize: '0.88rem' }}>🚨 Auto-calling KIRAN in</span>
                       <strong style={{ fontSize: '1.5rem', color: '#ef5350' }}>{countdown}s</strong>
@@ -233,9 +203,7 @@ const App = () => {
                     <div style={{ height: '5px', background: 'rgba(255,255,255,0.1)', borderRadius: '3px', overflow: 'hidden', marginBottom: '0.75rem' }}>
                       <div style={{ height: '100%', width: `${progressPct}%`, background: 'linear-gradient(90deg,#e53935,#ef9a9a)', borderRadius: '3px', transition: 'width 1s linear' }} />
                     </div>
-                    <button onClick={cancelCountdown} style={{ background: 'transparent', border: '1px solid #555', color: '#9e9e9e', borderRadius: '8px', padding: '4px 14px', cursor: 'pointer', fontSize: '0.78rem' }}>
-                      Cancel auto-call
-                    </button>
+                    <button onClick={cancelCountdown} style={{ background: 'transparent', border: '1px solid #555', color: '#9e9e9e', borderRadius: '8px', padding: '4px 14px', cursor: 'pointer', fontSize: '0.78rem' }}>Cancel auto-call</button>
                   </div>
                 )
               ) : (
@@ -258,20 +226,12 @@ const App = () => {
             <p style={{ color: '#757575', fontSize: '0.78rem', margin: '0 0 0.5rem' }}>📞 Free & confidential helplines:</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginBottom: '1rem' }}>
               {crisis.resources.map((h, i) => (
-                <button key={i} onClick={() => triggerCall(h.phone)} style={{
-                  background: i === 0 ? 'linear-gradient(135deg,#c62828,#e53935)' : 'rgba(255,255,255,0.05)',
-                  border: i === 0 ? 'none' : '1px solid rgba(255,255,255,0.12)',
-                  borderRadius: '12px', padding: '0.75rem 1rem', cursor: 'pointer', color: '#fff',
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between', textAlign: 'left',
-                  boxShadow: i === 0 ? '0 4px 15px rgba(229,57,53,0.3)' : 'none',
-                }}>
+                <button key={i} onClick={() => triggerCall(h.phone)} style={{ background: i === 0 ? 'linear-gradient(135deg,#c62828,#e53935)' : 'rgba(255,255,255,0.05)', border: i === 0 ? 'none' : '1px solid rgba(255,255,255,0.12)', borderRadius: '12px', padding: '0.75rem 1rem', cursor: 'pointer', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between', textAlign: 'left', boxShadow: i === 0 ? '0 4px 15px rgba(229,57,53,0.3)' : 'none' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <span style={{ fontSize: '1.1rem' }}>📞</span>
                     <div>
                       <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{h.name} — {h.display}</div>
-                      <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.55)', marginTop: 2 }}>
-                        {h.description} • {h.availability}{h.tollFree && ' • Toll Free'}
-                      </div>
+                      <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.55)', marginTop: 2 }}>{h.description} • {h.availability}{h.tollFree && ' • Toll Free'}</div>
                     </div>
                   </div>
                   <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: '1rem' }}>→</span>
@@ -280,9 +240,7 @@ const App = () => {
             </div>
 
             <details style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '0.85rem', marginBottom: '1rem' }}>
-              <summary style={{ cursor: 'pointer', color: '#80cbc4', fontSize: '0.85rem' }}>
-                🧘 Try a quick grounding exercise (5-4-3-2-1)
-              </summary>
+              <summary style={{ cursor: 'pointer', color: '#80cbc4', fontSize: '0.85rem' }}>🧘 Try a quick grounding exercise (5-4-3-2-1)</summary>
               <div style={{ paddingTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                 {[['👁','5 cheezein dekho','things you can SEE'],['✋','4 cheezein chuo','things you can TOUCH'],['👂','3 awaazein suno','sounds you can HEAR'],['👃','2 khusboo mahso karo','things you can SMELL'],['👅','1 taste notice karo','thing you can TASTE']].map(([icon, hindi, english]) => (
                   <div key={english} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
@@ -293,9 +251,7 @@ const App = () => {
                     </div>
                   </div>
                 ))}
-                <p style={{ margin: '0.5rem 0 0', color: '#80cbc4', fontSize: '0.78rem', fontStyle: 'italic' }}>
-                  Breathe in 4... hold 4... out 4... Tum theek rahoge. 💚
-                </p>
+                <p style={{ margin: '0.5rem 0 0', color: '#80cbc4', fontSize: '0.78rem', fontStyle: 'italic' }}>Breathe in 4... hold 4... out 4... Tum theek rahoge. 💚</p>
               </div>
             </details>
 
@@ -304,9 +260,7 @@ const App = () => {
                 Main theek hoon, Saathi se baat karna chahta hoon
               </button>
             )}
-            <p style={{ textAlign: 'center', color: '#424242', fontSize: '0.72rem', margin: 0 }}>
-              🔒 100% anonymous — no data saved, no one notified
-            </p>
+            <p style={{ textAlign: 'center', color: '#424242', fontSize: '0.72rem', margin: 0 }}>🔒 100% anonymous — no data saved, no one notified</p>
           </div>
         </div>
       </div>
@@ -318,9 +272,7 @@ const App = () => {
     const isUser = message.role === 'user';
     return (
       <div className={`flex gap-2 sm:gap-3 mb-3 sm:mb-4 ${isUser ? 'justify-end' : 'justify-start'} px-2 sm:px-0`}>
-        {!isUser && (
-          <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm flex-shrink-0">S</div>
-        )}
+        {!isUser && <div className="w-6 h-6 sm:w-8 sm:h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm flex-shrink-0">S</div>}
         <div className={`max-w-[75%] sm:max-w-xs lg:max-w-md px-3 sm:px-4 py-2 sm:py-3 rounded-2xl ${isUser ? 'bg-blue-500 text-white rounded-br-md' : message.isError ? 'bg-red-100 text-red-800 border border-red-300 rounded-bl-md' : 'bg-gray-100 text-gray-800 rounded-bl-md'}`}>
           <div className="whitespace-pre-wrap break-words text-sm sm:text-base leading-relaxed">{message.content}</div>
           {message.crisis && (
@@ -331,13 +283,9 @@ const App = () => {
               ))}
             </div>
           )}
-          <div className="text-xs opacity-60 mt-1 sm:mt-2">
-            {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-          </div>
+          <div className="text-xs opacity-60 mt-1 sm:mt-2">{new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
         </div>
-        {isUser && (
-          <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm flex-shrink-0">Y</div>
-        )}
+        {isUser && <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm flex-shrink-0">Y</div>}
       </div>
     );
   };
@@ -350,9 +298,7 @@ const App = () => {
         <div className="flex items-center gap-2">
           <span className="text-gray-600 text-xs sm:text-sm">Saathi is typing</span>
           <div className="flex gap-1">
-            {[0, 1, 2].map(i => (
-              <div key={i} className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
-            ))}
+            {[0, 1, 2].map(i => <div key={i} className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />)}
           </div>
         </div>
       </div>
@@ -367,10 +313,12 @@ const App = () => {
 
       {/* 🌿 Mood Tracker */}
       {showMoodTracker && (
-        <MoodTracker
-          onClose={() => setShowMoodTracker(false)}
-          onMoodLogged={handleMoodLogged}
-        />
+        <MoodTracker onClose={() => setShowMoodTracker(false)} onMoodLogged={handleMoodLogged} />
+      )}
+
+      {/* 🔮 Kal Ka Ankur */}
+      {showKalKaAnkur && (
+        <KalKaAnkur onClose={() => setShowKalKaAnkur(false)} />
       )}
 
       {/* Header */}
@@ -381,12 +329,12 @@ const App = () => {
               <img src="/img.png" alt="Logo" className="w-6 h-6 mr-2" />
               Saathi
             </h1>
-            {/* 🆕 Mood tracker button — only shown after session starts */}
+            {/* Buttons — only shown after session starts */}
             {sessionId && (
-              <MoodTrackerButton
-                onClick={() => setShowMoodTracker(true)}
-                hasCheckedIn={hasCheckedIn}
-              />
+              <div className="flex items-center gap-2">
+                <KalKaAnkurButton onClick={() => setShowKalKaAnkur(true)} />
+                <MoodTrackerButton onClick={() => setShowMoodTracker(true)} hasCheckedIn={hasCheckedIn} />
+              </div>
             )}
           </div>
           <p className="text-blue-100 text-xs sm:text-sm mt-1">
@@ -406,14 +354,17 @@ const App = () => {
           <div className="flex-1 flex items-center justify-center p-4 sm:p-8">
             <div className="text-center max-w-sm sm:max-w-md">
               <div className="text-4xl sm:text-6xl mb-4 sm:mb-6 animate-pulse">🌟</div>
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4">
-                नमस्ते! Welcome to Saathi
-              </h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4">नमस्ते! Welcome to Saathi</h2>
               <p className="text-gray-600 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
                 Your anonymous, culturally-aware AI companion for mental wellness support.
-                I understand the unique pressures faced by Indian youth and can communicate
-                in both Hindi and English.
+                I understand the unique pressures faced by Indian youth and can communicate in both Hindi and English.
               </p>
+              {/* Feature preview on welcome screen */}
+              <div className="flex justify-center gap-3 mb-5 flex-wrap">
+                <span className="text-xs bg-green-50 text-green-700 border border-green-200 px-3 py-1 rounded-full">🌿 Mood Tracker</span>
+                <span className="text-xs bg-purple-50 text-purple-700 border border-purple-200 px-3 py-1 rounded-full">🔮 Kal Ka Ankur</span>
+                <span className="text-xs bg-red-50 text-red-700 border border-red-200 px-3 py-1 rounded-full">🚨 Crisis Support</span>
+              </div>
               <div className="space-y-3">
                 <button onClick={startSession} className="bg-blue-500 hover:bg-blue-600 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full font-medium transition-colors shadow-lg hover:shadow-xl text-sm sm:text-base w-full sm:w-auto">
                   Start Anonymous Chat
