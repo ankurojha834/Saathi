@@ -14,7 +14,7 @@
 
 | Resource | Link |
 |----------|------|
-| 🔗 Live Application | [saathi-supporter.vercel.app](https://saathi-frontend.onrender.com) |
+| 🔗 Live Application | [https://saathi-frontend.onrender.com](https://saathi-frontend.onrender.com) |
 | 🎥 Demo Video | [Watch Demo](#) |
 | 📄 Pitch Deck | [View PPT](https://drive.google.com/file/d/1swQ4PPZgHgdQ1r5MFv-a_4kQfZkJiGcF/view?usp=drive_link) |
 
