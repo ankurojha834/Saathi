@@ -22,7 +22,7 @@
 
 ## 💔 The Silent Crisis
 
-Every night, thousands of Indian students stare at their phones, drowning in anxiety...
+Every night, thousands of Indian students stare at their phones, drowning in anxiety....
 
 > *"What if I fail JEE again?"*
 > *"My parents will be so disappointed..."*
